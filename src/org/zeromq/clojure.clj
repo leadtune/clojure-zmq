@@ -49,8 +49,8 @@
 ;
 ; Socket
 ;
-(defn make-socket [context socket-type]
-  (.socket context socket-type))
+(defn make-socket [^org.zeromq.ZMQ$Context context socket-type]
+  (.socket context (int socket-type)))
 
 (defn set-socket-option [socket option value]
   (.setsockopt socket option value))
@@ -58,18 +58,18 @@
 (defn bind [socket address]
   (.bind socket address))
 
-(defn connect [socket address]
+(defn connect [^org.zeromq.ZMQ$Socket socket ^String address]
   (.connect socket address))
 
 (defn send-
-  ([socket message flags]
-   (.send socket message flags))
-  ([socket message]
-   (send- socket message 0)))
+  ([^org.zeromq.ZMQ$Socket socket ^bytes message ^int flags]
+     (.send socket message flags))
+  ([^org.zeromq.ZMQ$Socket socket ^bytes message]
+     (send- socket message 0)))
 
 (defn recv
-  ([socket flags]
-    (.recv socket flags))
+  ([^org.zeromq.ZMQ$Socket socket ^int flags]
+     (.recv socket flags))
   ([socket]
     (recv socket 0)))
 
